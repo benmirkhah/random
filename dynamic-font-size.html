@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <title>Dynamic Font Size (depends on page hight and width)</title>
+  <meta name="HandheldFriendly" content="true">
+  <meta name="MobileOptimized"  content="width">
+  <meta name="viewport"         content="width=device-width, initial-scale=1" />
+  <meta name="description"      content="Font size grows and shrinks based on viewport height and width" />
+  <style>
+:root {
+  --debug:   1; /* off 0 / on 1 */
+  --outline: 0;
+
+  /* Width / Heigh breakpoints & their multipliers at any given moment */ 
+  --wb: 0px;
+  --hb: 0px; 
+  --wm: 0; 
+  --hm: 0;   
+}
+
+* { box-sizing: border-box; outline: calc(var(--outline) * 1px) dotted gold; } /* Debug Mode */
+
+body {
+  margin: 0; 
+  padding: 0; 
+  font-family: sans-serif;
+  color:       #CCC; 
+  font-size:   1.5em;
+  line-height: 2.0em;
+  background-color: hsl(calc(10 * var(--wm)), calc(5% * var(--hm)), 25% );
+
+  /* Dynamic font sizes using height & width scalers */  
+  --s1: calc((0.65 * var(--hm)) * (0.50 * var(--wm)));
+  --s2: calc((0.60 * var(--hm)) * (0.40 * var(--wm)));
+  --s3: calc((0.60 * var(--hm)) * (0.30 * var(--wm)));
+  --s4: calc((0.70 * var(--hm)) * (0.20 * var(--wm)));
+  --s5: calc((0.75 * var(--hm)) * (0.15 * var(--wm)));
+  --s6: calc((0.90 * var(--hm)) * (0.10 * var(--wm)));
+
+  --h1-fs: calc((1px * var(--s1)) + 5px);  --h1-lh: calc((1.25px * var(--s1)) +  1px);  --h1-fc: #FFFFFFAA;
+  --h2-fs: calc((1px * var(--s2)) + 6px);  --h2-lh: calc((1.25px * var(--s2)) +  3px);  --h2-fc: #EEEEEEBB;
+  --h3-fs: calc((1px * var(--s3)) + 7px);  --h3-lh: calc((1.20px * var(--s3)) +  6px);  --h3-fc: #DDDDDDCC;
+  --h4-fs: calc((1px * var(--s4)) + 7px);  --h4-lh: calc((1.20px * var(--s4)) +  9px);  --h4-fc: #CCCCCCDD;
+  --h5-fs: calc((1px * var(--s5)) + 7px);  --h5-lh: calc((1.15px * var(--s5)) + 12px);  --h5-fc: #BBBBBBEE;
+  --h6-fs: calc((1px * var(--s6)) + 7px);  --h6-lh: calc((1.15px * var(--s6)) + 16px);  --h6-fc: #AAAAAAFF;
+  
+  h1, h2, h3, h4, h5, h6 { margin: 0 auto; padding: 0; width: max-content; font-family: Georgia, serif ;}
+}
+
+h1 { font-size: var(--h1-fs);  line-height: var(--h1-lh);  color: var(--h1-fc); }
+h2 { font-size: var(--h2-fs);  line-height: var(--h2-lh);  color: var(--h2-fc); }
+h3 { font-size: var(--h3-fs);  line-height: var(--h3-lh);  color: var(--h3-fc); }
+h4 { font-size: var(--h4-fs);  line-height: var(--h4-lh);  color: var(--h4-fc); }
+h5 { font-size: var(--h5-fs);  line-height: var(--h5-lh);  color: var(--h5-fc); }
+h6 { font-size: var(--h6-fs);  line-height: var(--h6-lh);  color: var(--h6-fc); }
+p  { margin: 0 auto; padding: 0; width: max-content; }
+
+.debug {
+  color: #FFF;
+  width: 100%;
+  font-size: 18px;
+  line-height: 58px;
+  overflow: hidden;
+  height: calc(var(--debug) * 60px);
+  background-color: hsl(calc(10 * var(--wm)), 100%, 30%);
+  border-bottom: 1px solid #FFFFFF33;
+  filter: drop-shadow(0px 5px 10px #333333CC);
+  
+  &::before {
+    margin: 0 20px;
+    counter-reset: wm var(--wm) hm var(--hm);
+    content: 'ratio ( ' counter(wm) ' x ' counter(hm) ' )';
+  } 
+  
+  &::after {
+    margin: 0 15px;
+    counter-reset: wb calc(var(--wm) * 60) hb calc(var(--hm) * 60);
+    content: '( W > ' counter(wb) ' ) ( H > ' counter(hb) ' )';
+  } 
+}
+
+section { padding-top: 25px; }
+
+/* Width Breakpoints */
+@media (width  >  60px)  { body { --wb:   60px; --wm:  1; } }
+@media (width  > 120px)  { body { --wb:  120px; --wm:  2; } }
+@media (width  > 180px)  { body { --wb:  180px; --wm:  3; } }
+@media (width  > 240px)  { body { --wb:  240px; --wm:  4; } }
+@media (width  > 300px)  { body { --wb:  300px; --wm:  5; } }
+@media (width  > 360px)  { body { --wb:  360px; --wm:  6; } }
+@media (width  > 420px)  { body { --wb:  420px; --wm:  7; } }
+@media (width  > 480px)  { body { --wb:  480px; --wm:  8; } }
+@media (width  > 540px)  { body { --wb:  540px; --wm:  9; } }
+@media (width  > 600px)  { body { --wb:  600px; --wm: 10; } }
+@media (width  > 660px)  { body { --wb:  660px; --wm: 11; } }
+@media (width  > 720px)  { body { --wb:  720px; --wm: 12; } }
+@media (width  > 780px)  { body { --wb:  780px; --wm: 13; } }
+@media (width  > 840px)  { body { --wb:  840px; --wm: 14; } }
+@media (width  > 900px)  { body { --wb:  900px; --wm: 15; } }
+@media (width  > 960px)  { body { --wb:  960px; --wm: 16; } }
+@media (width  > 1020px) { body { --wb: 1020px; --wm: 17; } }
+@media (width  > 1080px) { body { --wb: 1080px; --wm: 18; } }
+@media (width  > 1140px) { body { --wb: 1140px; --wm: 19; } }
+@media (width  > 1200px) { body { --wb: 1200px; --wm: 20; } }
+@media (width  > 1260px) { body { --wb: 1260px; --wm: 21; } }
+@media (width  > 1320px) { body { --wb: 1320px; --wm: 22; } }
+@media (width  > 1380px) { body { --wb: 1380px; --wm: 23; } }
+@media (width  > 1440px) { body { --wb: 1440px; --wm: 24; } }
+@media (width  > 1500px) { body { --wb: 1500px; --wm: 25; } }
+@media (width  > 1560px) { body { --wb: 1560px; --wm: 26; } }
+@media (width  > 1620px) { body { --wb: 1620px; --wm: 27; } }
+@media (width  > 1680px) { body { --wb: 1680px; --wm: 28; } }
+@media (width  > 1740px) { body { --wb: 1740px; --wm: 29; } }
+@media (width  > 1800px) { body { --wb: 1800px; --wm: 30; } }
+@media (width  > 1860px) { body { --wb: 1860px; --wm: 31; } }
+@media (width  > 1920px) { body { --wb: 1920px; --wm: 32; } }
+@media (width  > 2100px) { body { --wb: 2100px; --wm: 35; } }
+@media (width  > 2400px) { body { --wb: 2400px; --wm: 40; } }
+@media (width  > 2700px) { body { --wb: 2700px; --wm: 45; } }
+@media (width  > 3000px) { body { --wb: 3000px; --wm: 50; } }
+/* Height Breakpoints */
+@media (height >  60px)  { body { --hb:   60px; --hm:  1; } }
+@media (height > 120px)  { body { --hb:  120px; --hm:  2; } }
+@media (height > 180px)  { body { --hb:  180px; --hm:  3; } }
+@media (height > 240px)  { body { --hb:  240px; --hm:  4; } }
+@media (height > 300px)  { body { --hb:  300px; --hm:  5; } }
+@media (height > 360px)  { body { --hb:  360px; --hm:  6; } }
+@media (height > 420px)  { body { --hb:  420px; --hm:  7; } }
+@media (height > 480px)  { body { --hb:  480px; --hm:  8; } }
+@media (height > 540px)  { body { --hb:  540px; --hm:  9; } }
+@media (height > 600px)  { body { --hb:  600px; --hm: 10; } }
+@media (height > 660px)  { body { --hb:  660px; --hm: 11; } }
+@media (height > 720px)  { body { --hb:  720px; --hm: 12; } }
+@media (height > 780px)  { body { --hb:  780px; --hm: 13; } }
+@media (height > 840px)  { body { --hb:  840px; --hm: 14; } }
+@media (height > 900px)  { body { --hb:  900px; --hm: 15; } }
+@media (height > 960px)  { body { --hb:  960px; --hm: 16; } }
+@media (height > 1020px) { body { --hb: 1020px; --hm: 17; } }
+@media (height > 1080px) { body { --hb: 1080px; --hm: 18; } }
+@media (height > 1140px) { body { --hb: 1140px; --hm: 19; } }
+@media (height > 1200px) { body { --hb: 1200px; --hm: 20; } }
+@media (height > 1260px) { body { --hb: 1260px; --hm: 21; } }
+@media (height > 1320px) { body { --hb: 1320px; --hm: 22; } }
+@media (height > 1380px) { body { --hb: 1380px; --hm: 23; } }
+@media (height > 1440px) { body { --hb: 1440px; --hm: 24; } }
+@media (height > 1500px) { body { --hb: 1500px; --hm: 25; } }
+@media (height > 1560px) { body { --hb: 1560px; --hm: 26; } }
+@media (height > 1620px) { body { --hb: 1620px; --hm: 27; } }
+@media (height > 1680px) { body { --hb: 1680px; --hm: 28; } }
+@media (height > 1740px) { body { --hb: 1740px; --hm: 29; } }
+@media (height > 1800px) { body { --hb: 1800px; --hm: 30; } }
+@media (height > 1860px) { body { --hb: 1860px; --hm: 31; } }
+@media (height > 1920px) { body { --hb: 1920px; --hm: 32; } }
+@media (height > 2100px) { body { --hb: 2100px; --hm: 35; } }
+@media (height > 2400px) { body { --hb: 2400px; --hm: 40; } }
+@media (height > 2700px) { body { --hb: 2700px; --hm: 45; } }
+@media (height > 3000px) { body { --hb: 3000px; --hm: 50; } }
+  </style>
+</head>
+
+<body>
+  <div class="debug"></div>
+  <section class="typography">
+    <h1>Hello World</h1>
+    <h2>Hello World</h2>
+    <h3>Hello World</h3>
+    <h4>Hello World</h4>
+    <h5>Hello World</h5>
+    <h6>Hello World</h6>
+    <p>Hello World</p>
+  </section>
+</body>
+</html>
